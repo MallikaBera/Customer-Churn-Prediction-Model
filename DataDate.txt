@@ -1,0 +1,46 @@
+##data date:
+from datetime import datetime
+import pandas as pd
+
+target_date = pd.to_datetime('8/31/2014',format='%m/%d/%Y')
+df = pd.DataFrame(data)
+df1 = pd.DataFrame(data)
+
+# Convert the columns to datetime
+df['A'] = pd.to_datetime(data['date_of_last_rech_6'],format='%m/%d/%Y')
+df['B'] = pd.to_datetime(data['date_of_last_rech_7'],format='%m/%d/%Y')
+df['C'] = pd.to_datetime(data['date_of_last_rech_8'],format='%m/%d/%Y')
+
+# Convert the columns to datetime
+df1['A'] = pd.to_datetime(data['date_of_last_rech_data_6'],format='%m/%d/%Y')
+df1['B'] = pd.to_datetime(data['date_of_last_rech_data_7'],format='%m/%d/%Y')
+df1['C'] = pd.to_datetime(data['date_of_last_rech_data_8'],format='%m/%d/%Y')
+
+
+# Function to compute date differences based on your conditions
+def calculate_date_diff(row):
+    # Convert the columns to datetime
+    
+    if pd.isna(row['C']):
+        # If 'C' is missing, calculate the difference between 'B' and the target date
+        if pd.notna(row['B']):
+            return (target_date - row['B']).days
+        # If 'B' is also missing, calculate the difference between 'A' and the target date
+        elif pd.notna(row['A']):
+            return (target_date - row['A']).days
+        else:
+            return None  # If both 'B' and 'A' are missing
+    else:
+        return (target_date - row['C']).days
+
+# Apply the function to each row
+df['date_diff'] = df.apply(calculate_date_diff, axis=1)
+df1['data_diff'] = df1.apply(calculate_date_diff,axis=1)
+##Removing unnecessary columns.
+df.drop(['A','B','C','date_of_last_rech_6','date_of_last_rech_7','date_of_last_rech_8'],inplace=True,axis=1)
+       
+df1.drop(['A','B', 'C','date_of_last_rech_data_7','date_of_last_rech_data_8','date_of_last_rech_data_6'],inplace = True,axis=1)
+##Assining Df back to Dataclean
+data=df
+data['data_diff']=df1['data_diff']
+data.shape
