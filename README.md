@@ -41,7 +41,9 @@ The performance check for our tested models are :
 |Decision Tree with PCA |0.83 |0.83 |0.72 |
 |Random Forest with PCA |1.0 |0.91 |0.70 |
 |XGBoost with PCA |0.90 |0.37 |0.72 |
-      
+
+
+      
 Considering the Train Score, Test Score and AUC, we can recommend <span style="color:Yellow">**logistic Regression with RFE**</span> as the most effective model for the given dataset.
 
 **Recommendations for telecom companies based on data analysis:**:            
