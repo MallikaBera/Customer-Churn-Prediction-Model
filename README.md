@@ -1,9 +1,9 @@
-# Machine Learning Model for Customer Churn Prediction for telecom companies
+# ML Model for Customer Churn Prediction for telecom companies
 In the telecommunication industry, customers tend to change operators if not provided with attractive schemes and offers. It is very important for any telecom operator to prevent the present customers from churning to other operators.
 
 Our objective would be to build an ML model which can predict if the customer will churn or not in a particular month based on the past data.
 
-![bike_sharing_image](https://github.com/user-attachments/assets/90a29b7f-77b0-4078-95cc-8e93ec5e6fd6)
+![chhurn.png](https://github.com/MallikaBera/mallikabera.github.io/blob/main/chhurn.png)
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -12,41 +12,45 @@ Our objective would be to build an ML model which can predict if the customer wi
 <!-- You can include any other section that is pertinent to your problem -->
 
 ## General Information
-In the dataset provided, there are three columns named 'casual', 'registered', and 'cnt'. The variable 'casual' indicates the number casual users who have made a rental. The variable 'registered' on the other hand shows the total number of registered users who have made a booking on a given day. Finally, the 'cnt' variable indicates the total number of bike rentals, including both casual and registered. The model is built taking this 'cnt' as the target variable.
+Customers usually do not decide to switch to another competitor instantly, but rather over a
+period of time (this is especially applicable to high-value customers). In churn prediction, we
+assume that there are three phases of customer lifecycle :
 
-The model is trained on pre-defined dataset, i.e, it has have a supervised learning.
-The target variable 'cnt' (count of total rental bikes including both casual and registered) is a continuous variable. 
+1. <u>The ‘good’ phase:</u> In this phase, the customer is happy with the service and behaves as usual.
 
-Hence, it a Linear Regression Model for the analysis.
+2. <u>The ‘action’ phase:</u> The customer experience starts to sore in this phase, for e.g. he/she gets a compelling offer from a competitor, faces unjust charges, becomes unhappy with service quality etc. In this phase, the customer usually shows different behaviour than the ‘good’ months. It is crucial to identify high-churn-risk customers in this phase, since some corrective actions can be taken at this point (such as matching the competitor’s offer/improving the service quality etc.)
+
+3. <u>The ‘churn’ phase:</u> In this phase, the customer is said to have churned. In this case, since you are working over a four-month window, the first two months are the ‘good’ phase, the third month is the ‘action’ phase, while the fourth month (September) is the ‘churn’ phase.
 
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 ## Conclusions
-**Features**:     
-The variables which are significant in predicting the demand for shared bikes - 
-- year 
-- temperature
-- humidity
-- windspeed
-- Season (summer,winter)
-- Weather Situation (Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist , Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds)
-- Month (December, January , July, November, September)
-- Weekday (Monday, Sunday)      
+**Model Selection**:  Since we have observed a clear imbalance of classes in the dataset, high training and test score alone can not help us to correctly identify True Positives. In order to identify the most suitable model, we have created and evaluated the performance of several classification models.  
 
-**Model Assumptions**:    
-The residuals from the model confirms our assumptions for Model Error Analysis : 
-- Linearity : The predictor variables and target variable have linear relationship
-- Error terms are normally distributed with their mean residing at 0
-- Error terms are independent of each other
-- Error terms have constant variance
+The performance check for our tested models are : 
 
-**Model Evaluation**:            
-Mean Absolute Error : 0.071       
-Mean SQ Error: 0.009        
-Root Mean SQ Error: 0.095      
-R-SQ : 0.811
+|<span style="color:Blue">Model</span> |<span style="color:Blue">Train Score</span>|<span style="color:Blue">Test Score</span>|<span style="color:Blue">AUC_ROC</span>| 
+|:-----|:----:|----:|----:|
+|Logistic Regression with RFE |0.91 |0.91 |0.91 |
+|Logistic Regression with PCA |0.82 |0.82 |0.83 |
+|Logistic Regression with PCA & Gridsearch|0.83 |0.83 |0.83 |
+|Logistic Regression with DecisionTreeClassifier|0.93 |0.89 |0.83 |
+|Logistic Regression with RandomForestClassifier|0.91 |0.91 |0.70 |
+|Logistic Regression with XGBoostClassifier|0.91 |0.91 |0.70 |
+|Decision Tree with GridSearch |0.83 |0.83 |0.83 |
+|Decision Tree with PCA |0.83 |0.83 |0.72 |
+|Random Forest with PCA |1.0 |0.91 |0.70 |
+|XGBoost with PCA |0.90 |0.37 |0.72 |
+      
+Considering the Train Score, Test Score and AUC, we can recommend <span style="color:Yellow">**logistic Regression with RFE**</span> as the most effective model for the given dataset.
 
-The Actual data and the predicted data show enough closeness to conclude that the model can predict bike demands fairly well.
+**Recommendations for telecom companies based on data analysis:**:            
+
+- During the first two months, the chances of a customer to stop the service is almost same as happy customers but he chances decrease significantly in the action phase. If a customer does not churn in the first two months, he is more likely to continue the service in the next months. So telecom companies should try to make sure customers do not leave within the first two months(good phase)
+
+- After the first two months, churn probability is higher for customers whose total recharge amount is low. So telecom companies can reach out to the customers who have started to recharge with lesser amount suddenly after few months of joining the network.
+
+- It is seen that customers who recharges less number of times are more probable to churn, so telecom companies can revisit the customers who do not seem to increase their recharge count for a longer period of time.
 
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
